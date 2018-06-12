@@ -27,7 +27,7 @@
   },
   "autoload": {
     "psr-4": {
-      "WPS\\Core\\": "src/"
+      "WPS\\Customizer\\": "src/"
     }
   }
 }
