@@ -97,7 +97,7 @@ if ( ! class_exists( 'Parallax' ) ) {
 			$wp_customize->add_panel(
 				$this->section_id,
 				array(
-					'title'       => __( 'Site Options', CHILD_TEXT_DOMAIN ),
+					'title'       => __( 'Site Options', 'wps' ),
 					'description' => '',
 					'priority'    => 202,
 				)
@@ -113,7 +113,7 @@ if ( ! class_exists( 'Parallax' ) ) {
 				$wp_customize->add_section(
 					$section_name,
 					array(
-						'title' => __( 'Background for ' . $section['name'], CHILD_TEXT_DOMAIN ),
+						'title' => __( 'Background for ' . $section['name'], 'wps' ),
 						'panel' => $this->section_id,
 					)
 				);
@@ -133,14 +133,14 @@ if ( ! class_exists( 'Parallax' ) ) {
 						$wp_customize,
 						$id . '_color',
 						array(
-							'label'       => __( 'Background Color', CHILD_TEXT_DOMAIN ),
+							'label'       => __( 'Background Color', 'wps' ),
 							'settings'    => $setting . '_color',
 							'section'     => $section_name,
 							'description' => sprintf(
 								'<p>%s:</p><code>$background_color = get_theme_mod( "%s" ); <br/>echo \'' .
 								htmlspecialchars( '<div class="parallax-window" style="background-color:$background_color"><div class="site-inner">' ) .
 								'\';<br/>/* DO SOMETHING */ <br/>echo "' . htmlspecialchars( '</div></div>' ) . '";</code>',
-								__( "To use on the frontend", CHILD_TEXT_DOMAIN ),
+								__( "To use on the frontend", 'wps' ),
 								$setting . '_color'
 							),
 						)
@@ -162,14 +162,14 @@ if ( ! class_exists( 'Parallax' ) ) {
 						$wp_customize,
 						$id . '_image',
 						array(
-							'label'       => __( 'Background Image', CHILD_TEXT_DOMAIN ),
+							'label'       => __( 'Background Image', 'wps' ),
 							'settings'    => $setting . '_image',
 							'section'     => $section_name,
 							'description' => sprintf(
 								'<p>%s:</p><code>$background_image_url = get_theme_mod( "%s" ); <br/>echo \'' .
 								htmlspecialchars( '<div class="parallax-window" data-speed="0.1" data-parallax="scroll" data-image-src="$background_image_url"><div class="site-inner">' ) .
 								'\';<br/>/* DO SOMETHING */ <br/>echo "' . htmlspecialchars( '</div></div>' ) . '</code>',
-								__( "To use on the frontend", CHILD_TEXT_DOMAIN ),
+								__( "To use on the frontend", 'wps' ),
 								$setting . '_image'
 							),
 						)
