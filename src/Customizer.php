@@ -8,12 +8,14 @@
  * @link    https://wpsmith.net/
  */
 
-namespace WPS\WP;
+namespace WPS\WP\Customizer;
+
+use WPS\Core\Singleton;
 
 /**
  * Create panels, sections, and controls in the Customizer.
  */
-class WPS_Customizer {
+class Customizer extends Singleton {
 
 	/**
 	 * The $wp_customize object.
@@ -23,34 +25,25 @@ class WPS_Customizer {
 	protected $wp_customize;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param \WP_Customize_Manager $wp_customize WP Customizer Manager.
-	 */
-	public function __construct( \WP_Customize_Manager $wp_customize ) {
-
-		$this->wp_customize = $wp_customize;
-
-	}
-
-	/**
 	 * Initialize registration.
 	 *
 	 * By leaving a hook here, it allows other plugins and child themes to also setup and register
 	 * their own panels, sections, settings, and controls.
 	 *
-	 * The Genesis Theme Settings and Theme SEO settings are registered in lib/admin/customizer.php.
+	 * @param \WP_Customize_Manager $wp_customize WP Customizer Manager.
 	 */
-	public function init() {
+	public function init( \WP_Customize_Manager $wp_customize ) {
+
+		$this->wp_customize = $wp_customize;
 
 		/**
 		 * Fires (when hooked correctly) on `wp_customize_register`, allowing
 		 * the `$genesis_customizer` object to be used to create Customizer
 		 * panels, sections, and controls.
 		 *
-		 * @param WPS_Customizer $this Genesis_Customizer instance.
+		 * @param Customizer $this WPS_Customizer instance.
 		 */
-		do_action( 'genesis_customizer', $this );
+		do_action( 'wps_customizer', $this );
 
 	}
 
