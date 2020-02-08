@@ -28,6 +28,9 @@
   "autoload": {
     "psr-4": {
       "WPS\\WP\\Customizer\\": "src/"
-    }
+    },
+    "files": [
+      "src/functions.php"
+    ]
   }
 }
