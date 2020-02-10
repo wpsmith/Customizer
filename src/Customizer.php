@@ -11,6 +11,7 @@
 namespace WPS\WP\Customizer;
 
 use WPS\Core\Singleton;
+use WPS\WP\Templates\TemplateLoader;
 
 /**
  * Create panels, sections, and controls in the Customizer.
@@ -48,6 +49,30 @@ class Customizer extends Singleton {
 	}
 
 	/**
+	 * @param $config
+	 *
+	 * @return array
+	 */
+	public static function get_config( $config, $plugin_directory ) {
+		$template_loader = new TemplateLoader( [
+			'filter_prefix'            => 'wps',
+			'theme_template_directory' => 'config',
+			'templates_directory'      => 'config',
+			'plugin_directory'         => $plugin_directory,
+		] );
+
+		$template = $template_loader->get_template_part( 'config', $config, null );
+
+		$data = array();
+		if ( is_readable( $template ) ) {
+			$data = require $template;
+		}
+
+		return (array) $data;
+
+	}
+
+	/**
 	 * Register Customizer panel, sections, settings, and controls via a `$config` array.
 	 *
 	 * @param array $config Customizer configuration.
@@ -77,7 +102,7 @@ class Customizer extends Singleton {
 	 * Helper alias for $wp_customize->add_panel().
 	 *
 	 * @param string $panel_name Name of the panel.
-	 * @param array  $panel      Panel properties.
+	 * @param array $panel Panel properties.
 	 */
 	public function register_panel( $panel_name, array $panel ) {
 
@@ -94,7 +119,7 @@ class Customizer extends Singleton {
 	 * Helper alias for $wp_customize->add_section().
 	 *
 	 * @param string $section_name Section name.
-	 * @param array  $section      Section properties.
+	 * @param array $section Section properties.
 	 */
 	public function register_section( $section_name, array $section ) {
 
@@ -111,8 +136,8 @@ class Customizer extends Singleton {
 	 * Helper alias for $wp_customize->add_setting().
 	 *
 	 * @param string $setting_name Setting name.
-	 * @param mixed  $setting      Setting default value.
-	 * @param array  $panel        Panel properties.
+	 * @param mixed $setting Setting default value.
+	 * @param array $panel Panel properties.
 	 */
 	public function register_setting( $setting_name, $setting, $panel ) {
 
@@ -135,8 +160,8 @@ class Customizer extends Singleton {
 	 * Helper alias for $wp_customize->add_control().
 	 *
 	 * @param string $control_name Control name.
-	 * @param array  $control      Control properties.
-	 * @param array  $panel        Panel properties.
+	 * @param array $control Control properties.
+	 * @param array $panel Panel properties.
 	 */
 	public function register_control( $control_name, array $control, $panel ) {
 
@@ -144,10 +169,14 @@ class Customizer extends Singleton {
 
 		$control_name = isset( $panel['control_prefix'] ) ? $panel['control_prefix'] . '_' . $control_name : $control_name;
 
-		$this->wp_customize->add_control(
-			$control_name,
-			$control
-		);
+		if ( 'image' === $control['type'] ) {
+			$this->wp_customize->add_control( new \WP_Customize_Image_Control( $this->wp_customize, $control_name, $control ) );
+		} else {
+			$this->wp_customize->add_control(
+				$control_name,
+				$control
+			);
+		}
 
 	}
 
